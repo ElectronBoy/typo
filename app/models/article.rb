@@ -289,6 +289,31 @@ class Article < Content
     end
   end
 
+  def merge_with(article_id)
+    merge_with_article = Article.find(article_id)
+
+    new_article = Article.get_or_build_article
+
+    new_article.body = self.body + merge_with_article.body
+    new_article.title = self.title
+    new_article.author = self.author
+    new_article.published = self.published
+    new_article.user_id = self.user_id
+
+    new_article.save
+
+    comments = Feedback.where(:article_id => [article_id, self.id]).each do |comment|
+      comment.article_id = new_article.id
+      comment.save!
+    end
+
+    merge_with_article.destroy
+    self.destroy
+
+    return new_article
+
+  end
+
   # Finds one article which was posted on a certain date and matches the supplied dashed-title
   # params is a Hash
   def self.find_by_permalink(params)
@@ -465,23 +490,5 @@ class Article < Content
     to = from + 1.day unless day.blank?
     to = to - 1 # pull off 1 second so we don't overlap onto the next day
     return from..to
-  end
-
-  def merge_with(article_id)
-    merge_with_article = Article.find(article_id)
-
-    self.body += merge_with_article.body
-
-    comments = Feedback.where("article_id = ?", article_id).each do |comment|
-      comment.article_id = self.id
-      comment.save!
-    end
-
-    merge_with_article.destroy
-
-    self.save
-
-    return self
-
   end
 end

@@ -1,4 +1,5 @@
 # Settings specified here will take precedence over those in config/environment.rb
+require "ruby-debug"
 
 TypoBlog::Application.configure do
   # In the development environment your application's code is reloaded on

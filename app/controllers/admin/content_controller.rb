@@ -18,6 +18,7 @@ class Admin::ContentController < Admin::BaseController
       flash[:error] = _("Error, You must select two different articles to merge")
     elsif @merge_article = @article.merge_with(params[:merge_with])
       flash[:info] = _("Info, Articles #{params[:id]} and #{params[:merge_with]} successfully merged")
+      params[:id] = @merge_article.id
 #render :text => "#{@merge_article.inspect}"
     else
       flash[:error] = _("Error, unable to merge two articles")
