@@ -466,4 +466,22 @@ class Article < Content
     to = to - 1 # pull off 1 second so we don't overlap onto the next day
     return from..to
   end
+
+  def merge_with(article_id)
+    merge_with_article = Article.find(article_id)
+
+    self.body += merge_with_article.body
+
+    comments = Feedback.where("article_id = ?", article_id).each do |comment|
+      comment.article_id = self.id
+      comment.save!
+    end
+
+    merge_with_article.destroy
+
+    self.save
+
+    return self
+
+  end
 end

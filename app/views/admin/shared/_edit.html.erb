@@ -4,3 +4,5 @@
   <%= render :partial => "form" %>
 
 <% end %>
+
+<%= render :partial => "merge", :locals => { :article_id => @article.id }  if current_user.admin? %>

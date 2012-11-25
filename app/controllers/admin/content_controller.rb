@@ -11,6 +11,21 @@ class Admin::ContentController < Admin::BaseController
     render :inline => "<%= raw auto_complete_result @items, 'name' %>"
   end
 
+  def merge
+    @article = Article.find(params[:id])
+
+    if params[:id] == params[:merge_with]
+      flash[:error] = _("Error, You must select two different articles to merge")
+    elsif @merge_article = @article.merge_with(params[:merge_with])
+      flash[:info] = _("Info, Articles #{params[:id]} and #{params[:merge_with]} successfully merged")
+#render :text => "#{@merge_article.inspect}"
+    else
+      flash[:error] = _("Error, unable to merge two articles")
+    end
+
+    redirect_to :action => 'edit', :id => params[:id]
+  end
+
   def index
     @search = params[:search] ? params[:search] : {}
     
@@ -180,7 +195,8 @@ class Admin::ContentController < Admin::BaseController
     @images = Resource.images_by_created_at.page(params[:page]).per(10)
     @resources = Resource.without_images_by_filename
     @macros = TextFilter.macro_filters
-    render 'new'
+    render 'new', { :admin => current_user.admin?, :article_id => @article.id }
+
   end
 
   def set_the_flash

@@ -2466,3 +2466,24 @@ button.btn::-moz-focus-inner, input[type=submit].btn::-moz-focus-inner {
   -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
   box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
 }
+
+.merge-box {
+  margin: 0 0 5px;
+  width: 18%;
+}
+.merge-box label {
+  display: block;
+  float: left;
+  width: 60px;
+  padding: 0;
+  margin-left: 0;
+  line-height: 18px;
+  text-align: left;
+  white-space: normal;
+}
+
+.merge-box input[type=submit] {
+  margin-bottom: 0;
+  margin-left: 0;
+  float: left;
+}
