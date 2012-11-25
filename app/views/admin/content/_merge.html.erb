@@ -1,0 +1,11 @@
+<div class='merge'>
+<h4><%= _("Merge Articles") %></h4>
+<ul id='merge' class=merge-box>
+
+<%= form_tag("/admin/content/merge/#{article_id}", :id => "merge_form", :enctype => "multipart/form-data", :class => "merge_form") do %>
+  <%= label_tag(:merge_label, "Article ID") %>
+  <%= text_field_tag(:merge_with) %>
+  <%= submit_tag("Merge", :id => "merge-button") %>
+<% end %>
+</ul>
+</div>
